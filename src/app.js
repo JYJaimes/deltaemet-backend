@@ -4,6 +4,7 @@ const cors = require('cors');
 // 1. Importamos nuestras rutas
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
 
@@ -23,3 +24,4 @@ module.exports = app;
 
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/payments', paymentRoutes)
