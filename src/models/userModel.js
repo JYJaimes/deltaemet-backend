@@ -8,23 +8,29 @@ exports.findUserByEmail = async (email) => {
 
 // Inserta al nuevo Gestor
 exports.createManager = async (email, setupToken, expiresAt) => {
-    // Como acordamos, el username inicial será el correo
     const query = `
         INSERT INTO users (username, email, role, account_status, setup_token, setup_token_expires_at)
         VALUES (?, ?, 'GESTOR', 'PENDING_SETUP', ?, ?)
     `;
     const [result] = await pool.execute(query, [email, email, setupToken, expiresAt]);
-    return result.insertId; // Retorna el ID del nuevo usuario
+    return result.insertId; 
 };
 
-// Buscar usuario por su token
+// 1. ESTA ES LA FUNCIÓN QUE FALTABA: Buscar usuario por el token de 15 min
+exports.findUserBySetupToken = async (token) => {
+    const query = 'SELECT id, email, setup_token_expires_at FROM users WHERE setup_token = ?';
+    const [rows] = await pool.execute(query, [token]);
+    return rows[0];
+};
+
+// 2. Buscar usuario para iniciar sesión (Login)
 exports.findUserForLogin = async (identifier) => {
     const query = 'SELECT * FROM users WHERE username = ? OR email = ?';
     const [rows] = await pool.execute(query, [identifier, identifier]);
     return rows[0];
 };
 
-// Activar la cuenta, guardar la contraseña hasheada y registrar el aviso de privacidad
+// 3. Activar la cuenta, guardar contraseña y registrar privacidad
 exports.activateManagerAccount = async (userId, hashedPassword) => {
     const query = `
         UPDATE users 

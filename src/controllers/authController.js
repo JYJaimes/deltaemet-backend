@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel');
 const { hashPassword } = require('../utils/hashPassword');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { generateAuthToken } = require('../utils/jwtHelper');
 
 exports.setupPassword = async (req, res) => {

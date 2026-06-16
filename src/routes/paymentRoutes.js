@@ -14,4 +14,17 @@ router.post('/upload',
     paymentController.uploadPayment
 );
 
+router.get('/pending',
+    verifyToken,
+    authorizeRoles('SUPER_ADMIN', 'GESTOR'),
+    paymentController.getPendingPayments
+);
+
+// Protegida: Solo los administradores pueden aprobar/rechazar dinero
+router.put('/:id/review',
+    verifyToken,
+    authorizeRoles('SUPER_ADMIN', 'GESTOR'),
+    paymentController.reviewPayment
+);
+
 module.exports = router;
