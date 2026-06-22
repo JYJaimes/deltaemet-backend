@@ -24,3 +24,16 @@ exports.verifyToken = (req, res, next) => {
         return res.status(401).json({ error: 'Token inválido o expirado. Por favor, inicia sesión nuevamente.' });
     }
 };
+
+// Middleware para autorizar accesos según el rol del usuario (RBAC)
+exports.authorizeRoles = (...allowedRoles) => {
+    return (req, res, next) => {
+        // Verificamos si el usuario existe en la petición y si su rol está en la lista de permitidos
+        if (!req.user || !allowedRoles.includes(req.user.role)) {
+            return res.status(403).json({ 
+                error: 'Acceso denegado. No tienes los permisos necesarios para esta acción.' 
+            });
+        }
+        next(); // Si el rol coincide, lo dejamos pasar al controlador
+    };
+};

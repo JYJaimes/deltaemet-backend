@@ -85,3 +85,14 @@ exports.reviewPayment = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor al procesar la revisión.' });
     }
 };
+
+exports.getMyHistory = async (req, res) => {
+    try {
+        const userId = req.user.id; // Lo sacamos del token de seguridad
+        const payments = await require('../models/paymentModel').getMyPayments(userId);
+        res.status(200).json({ data: payments });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener tu historial de pagos.' });
+    }
+};

@@ -27,4 +27,7 @@ router.put('/:id/review',
     paymentController.reviewPayment
 );
 
+// (Asegúrate de tener importados verifyToken y authorizeRoles al inicio del archivo)
+router.get('/me', verifyToken, authorizeRoles('RESIDENTE'), paymentController.getMyHistory);
+
 module.exports = router;

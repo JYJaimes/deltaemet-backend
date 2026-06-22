@@ -43,3 +43,15 @@ exports.reviewPayment = async (paymentId, status, managerId, feedback) => {
     const [result] = await pool.execute(query, [status, managerId, feedback, paymentId]);
     return result.affectedRows;
 };
+
+exports.getMyPayments = async (userId) => {
+    const query = `
+        SELECT p.id, p.amount_paid, p.payment_date, p.status, p.manager_feedback 
+        FROM payments p
+        JOIN units u ON p.unit_id = u.id
+        WHERE u.resident_id = ?
+        ORDER BY p.created_at DESC
+    `;
+    const [rows] = await pool.execute(query, [userId]);
+    return rows;
+};

@@ -44,3 +44,13 @@ exports.createManager = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor al crear el usuario' });
     }
 };
+
+exports.listAllUsers = async (req, res) => {
+    try {
+        const users = await require('../models/userModel').getAllUsers();
+        res.status(200).json({ data: users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al listar usuarios.' });
+    }
+};

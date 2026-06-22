@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-
+const path = require('path'); // 1. Añade esta importación
 // 1. Importamos todas nuestras rutas
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -12,6 +12,7 @@ const app = express();
 // 2. Middlewares globales (El orden aquí es VITAL)
 app.use(cors()); 
 app.use(express.json()); // El traductor de JSON debe ir antes de las rutas
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Ruta de prueba (Health check)
 app.get('/api/v1/health', (req, res) => {

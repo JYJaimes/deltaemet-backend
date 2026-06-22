@@ -44,3 +44,9 @@ exports.activateManagerAccount = async (userId, hashedPassword) => {
     const [result] = await pool.execute(query, [hashedPassword, userId]);
     return result.affectedRows;
 };
+
+// Asegúrate de tener: const pool = require('../config/db'); al inicio de este archivo
+exports.getAllUsers = async () => {
+    const [rows] = await pool.execute('SELECT id, email, role, account_status, created_at FROM users ORDER BY created_at DESC');
+    return rows;
+};
